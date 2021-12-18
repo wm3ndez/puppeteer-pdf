@@ -4,10 +4,16 @@ const puppeteer = require("puppeteer");
 const hostname = "0";
 const port = 3000;
 
-const server = http.createServer(async (req, res) => {
-  req.on("data", async  (d) => {
+const server = http.createServer((req, res) => {
+  let data = '';
+  
+  req.on('data', chunk => {
+    data += chunk;
+  })
+  
+  req.on('end', async () => {
 
-    await generatePDF(d.toString())
+    await generatePDF(data.toString())
       .then((buffer) => {
         res.statusCode = 200;
         res.setHeader("Content-Type", "application/pdf");
@@ -20,7 +26,9 @@ const server = http.createServer(async (req, res) => {
       })
       .finally(() => res.end());
 
-  });
+  })
+
+  
 
 });
 
