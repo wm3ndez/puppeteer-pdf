@@ -1,0 +1,21 @@
+{
+  "name": "puppeteerpdf",
+  "version": "1.0.0",
+  "description": "Simple app that converts HTML into PDF",
+  "main": "app.js",
+  "dependencies": {
+    "puppeteer": "^13.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "pdf",
+    "puppeteer",
+    "node"
+  ],
+  "author": "Williams Méndez",
+  "license": "ISC"
+}
