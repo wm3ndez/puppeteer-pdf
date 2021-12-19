@@ -4,32 +4,28 @@ const puppeteer = require("puppeteer");
 const hostname = "0";
 const port = 3000;
 
-const server = http.createServer((req, res) => {
-  let data = '';
-  
-  req.on('data', chunk => {
-    data += chunk;
-  })
-  
-  req.on('end', async () => {
+const server = http.createServer(async (req, res) => {
+  const buffers = [];
 
-    await generatePDF(data.toString())
-      .then((buffer) => {
-        res.statusCode = 200;
-        res.setHeader("Content-Type", "application/pdf");
-        res.write(buffer);
-      })
-      .catch((er) => {
-        console.error(er);
-        res.statusCode = 500;
-        res.write(er);
-      })
-      .finally(() => res.end());
+  for await (const chunk of req) {
+    buffers.push(chunk);
+  }
 
-  })
+  const data = Buffer.concat(buffers).toString();
 
-  
-
+  await generatePDF(data.toString())
+    .then((buffer) => {
+      res.statusCode = 200;
+      res.setHeader("Content-Type", "application/pdf");
+      res.write(buffer);
+    })
+    .catch((er) => {
+      console.error(er);
+      res.statusCode = 500;
+      res.write(er);
+    })
+    .finally(() => res.end());
+    
 });
 
 server.listen(port, hostname, () => {
