@@ -22,7 +22,6 @@ const server = http.createServer(async (req, res) => {
     .catch((er) => {
       console.error(er);
       res.statusCode = 500;
-      res.write(er);
     })
     .finally(() => res.end());
     
@@ -33,7 +32,10 @@ server.listen(port, hostname, () => {
 });
 
 async function generatePDF(html = "") {
-  const browser = await puppeteer.launch();
+  const browser = await puppeteer.launch({
+    headless: true,
+    args: ['--disable-dev-shm-usage', '--no-sandbox'],
+  });
   const page = await browser.newPage();
 
   await page.setContent(html);
