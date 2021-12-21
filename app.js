@@ -19,8 +19,7 @@ const server = http.createServer(async (req, res) => {
       res.setHeader("Content-Type", "application/pdf");
       res.write(buffer);
     })
-    .catch((er) => {
-      console.error(er);
+    .catch(() => {
       res.statusCode = 500;
     })
     .finally(() => res.end());
@@ -34,7 +33,15 @@ server.listen(port, hostname, () => {
 async function generatePDF(html = "") {
   const browser = await puppeteer.launch({
     headless: true,
-    args: ['--disable-dev-shm-usage', '--no-sandbox'],
+    args: [
+      '--no-sandbox', 
+      '--single-process', 
+      '--no-zygote',
+      '--disable-gpu', 
+      '--disable-dev-profile',
+      '--disable-web-security', 
+      '--disable-dev-shm-usage', 
+    ],
   });
   const page = await browser.newPage();
 
