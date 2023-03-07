@@ -4,7 +4,7 @@
   "description": "Simple app that converts HTML into PDF",
   "main": "app.js",
   "dependencies": {
-    "puppeteer": "^13.0.0"
+    "puppeteer": "^13.7.0"
   },
   "devDependencies": {},
   "scripts": {
